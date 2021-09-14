@@ -14,15 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+# from django.urls import path
+from django.conf.urls import url
 from qa import views
 
-urlpatterns = [
-    path('', views.test, name='test'),
-    path('login/', views.test, name='login'),
-    path('signup/', views.test, name='signup'),
-    path('question/<int:id>/', views.test, name='question'),
-    path('ask/', views.test, name='ask'),
-    path('popular/', views.test, name='popular'),
-    path('new/', views.test, name='new'),
+# urlpatterns = [
+#     path('', views.test, name='test'),
+#     path('login/', views.test, name='login'),
+#     path('signup/', views.test, name='signup'),
+#     path('question/<int:id>/', views.test, name='question'),
+#     path('ask/', views.test, name='ask'),
+#     path('popular/', views.test, name='popular'),
+#     path('new/', views.test, name='new'),
+# ]
+
+urlpatterns = [                                              
+   url(r'^$', views.test),                                                              
+   url(r'^login/$', views.test, name='login'),                                    
+   url(r'^signup/$', views.test, name='signup'),                                   
+   url(r'^question/(?P<id>[0-9]+)/$', views.test, name='question'),                 
+   url(r'^ask/$', views.test, name='ask'),                                         
+   url(r'^popular/$', views.test, name='popular'),                                 
+   url(r'^new/$', views.test, name='new'),                                         
 ]
