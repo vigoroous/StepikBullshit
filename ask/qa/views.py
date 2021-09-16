@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.http.response import Http404
 from .models import Question, QuestionManager
+from django.core.paginator import Paginator
 
 
 def test(request, *args, **kwargs):
@@ -13,7 +14,18 @@ def home(request):
 
 
 def popular(request):
-    pass
+    try:
+        limit = int(request.GET.get('limit', 10))
+    except:
+        limit = 10
+    try:
+        page = int(request.GET.get('page', 1))
+    except:
+        page = 1
+    paginator = Paginator(Question.objects.all(), limit)
+    articles = paginator.page(page)
+    return render(request, 'qa/popular.html', {'articles': articles})
+
 
 
 def question(request, id):
