@@ -7,17 +7,26 @@
 </head>
 
 <body>
-    <p>Hello World!</p>
-    {% for question in articles %}
-    {# Each "contact" is a Contact model object. #}
-    {{ question.title }}<br>
-    {{ question.text }}<br>
-    {{ question.added_at }}<br>
-    {{ question.rating }}<br>
-    {{ question.author }}<br>
-    {{ question.likes }}<br>
-    {% endfor %}
-
+    {% if type == 0 %}
+    <h1>Recent questions</h1>
+    {% elif type == 1 %}
+    <h1>Popular questions</h1>
+    {% else %}
+    <p>Error occured</p>
+    {% endif %}
+    <div class="questions">
+        {% for question in articles %}
+        {# Each "contact" is a Contact model object. #}
+        <div class="questions__single">
+            <h3>{{ question.title }}</h3>
+            <p>{{ question.text }}</p>
+            <p>{{ question.added_at }}</p>
+            <p>{{ question.rating }}</p>
+            <p>{{ question.author }}</p>
+            <p>{{ question.likes }}</p>
+        </div>
+        {% endfor %}
+    </div>
     <div class="pagination">
         <span class="step-links">
             {% if articles.has_previous %}

@@ -5,10 +5,14 @@
         <link rel="stylesheet" href="{% static 'css/main.css'%}" type="text/css">
     </head>
     <body>
-        <p>Hello World!</p>
-        {{question.id}}
-        {{question.title}}
-        {{question.text}}
-        {{question.added_at}}
+        <h1>Question id: {{ question.id }}</h1>
+        <div class="questions__single">
+            <h3>{{ question.title }}</h3>
+            <p>{{ question.text }}</p>
+            <p>{{ question.added_at }}</p>
+            <p>{{ question.rating }}</p>
+            <p>{{ question.author }}</p>
+            <p>{{ question.likes }}</p>
+        </div>
     </body>
 </html>

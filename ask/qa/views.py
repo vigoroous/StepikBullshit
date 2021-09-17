@@ -10,7 +10,17 @@ def test(request, *args, **kwargs):
 
 
 def home(request):
-    pass
+    try:
+        limit = int(request.GET.get('limit', 10))
+    except:
+        limit = 10
+    try:
+        page = int(request.GET.get('page', 1))
+    except:
+        page = 1
+    paginator = Paginator(Question.objects.new(), limit)
+    articles = paginator.page(page)
+    return render(request, 'qa/popular.html', {'articles': articles, 'type': 0})
 
 
 def popular(request):
@@ -22,9 +32,9 @@ def popular(request):
         page = int(request.GET.get('page', 1))
     except:
         page = 1
-    paginator = Paginator(Question.objects.all(), limit)
+    paginator = Paginator(Question.objects.popular(), limit)
     articles = paginator.page(page)
-    return render(request, 'qa/popular.html', {'articles': articles})
+    return render(request, 'qa/popular.html', {'articles': articles, 'type': 1})
 
 
 
