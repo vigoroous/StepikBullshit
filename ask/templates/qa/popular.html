@@ -14,6 +14,7 @@
     {% else %}
     <p>Error occured</p>
     {% endif %}
+
     <div class="questions">
         {% for question in articles %}
         {# Each "contact" is a Contact model object. #}
@@ -27,6 +28,7 @@
         </div>
         {% endfor %}
     </div>
+    
     <div class="pagination">
         <span class="step-links">
             {% if articles.has_previous %}

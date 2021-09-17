@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http.response import Http404
-from .models import Question, QuestionManager
+from .models import Answer, Question, QuestionManager
 from django.core.paginator import Paginator
 
 
@@ -37,12 +37,12 @@ def popular(request):
     return render(request, 'qa/popular.html', {'articles': articles, 'type': 1})
 
 
-
 def question(request, id):
     try:
-        question = Question.objects.get(pk = id)
+        question = Question.objects.get(pk=id)
+        answers = Answer.objects.all().filter(question=id)
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
-    return render(request, 'qa/question.html', {'question': question})
+    return render(request, 'qa/question.html', {'question': question, 'answers': answers})
     # question = Question.objects.all()
     # return HttpResponse(question)
