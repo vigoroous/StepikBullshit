@@ -38,6 +38,15 @@
     {% endfor %}
 
     {% endblock %}
+
+    <h1>Leave your answer to the question here:</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.text }}
+        {{ form.question }}
+        <button type="submit">Submit</button>
+    </form>
+    <span>{{ error }}</span>
 </body>
 
 </html>
