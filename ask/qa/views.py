@@ -40,7 +40,7 @@ def popular(request):
 
 def question(request, id):
     try:
-        question = Question.objects.get(pk=id)
+        this_question = Question.objects.get(pk=id)
         answers = Answer.objects.all().filter(question=id)
         err_message = ''
 
@@ -54,18 +54,16 @@ def question(request, id):
             else:
                 err_message = 'Invalid form data'
         else:
-            answer_form = AnswerForm()
+            answer_form = AnswerForm(initial={'question': id})
 
         data = {
-            'question': question,
+            'question': this_question,
             'answers': answers,
             'form': answer_form,
         }
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
     return render(request, 'qa/question.html', data)
-    # question = Question.objects.all()
-    # return HttpResponse(question)
 
 
 def ask(request):

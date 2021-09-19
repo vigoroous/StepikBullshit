@@ -1,5 +1,6 @@
+from django.forms.widgets import HiddenInput
 from .models import Answer, Question
-from django.forms import ModelForm, TextInput, Textarea, HiddenInput
+from django.forms import ModelForm, TextInput, Textarea, ModelChoiceField
 
 
 class AskForm(ModelForm):
@@ -24,8 +25,5 @@ class AnswerForm(ModelForm):
             'text': Textarea(attrs={
                 "class": "form__text",
             }),
-            'question': HiddenInput(attrs={
-                "class": "form__question",
-                "value": "",
-            }),
+            'question': HiddenInput(),
         }
