@@ -21,7 +21,7 @@ def home(request):
         page = 1
     paginator = Paginator(Question.objects.new(), limit)
     articles = paginator.page(page)
-    return render(request, 'qa/popular.html', {'articles': articles, 'type': 0})
+    return render(request, 'qa/recent_questions.html', {'articles': articles})
 
 
 def popular(request):
@@ -35,7 +35,7 @@ def popular(request):
         page = 1
     paginator = Paginator(Question.objects.popular(), limit)
     articles = paginator.page(page)
-    return render(request, 'qa/popular.html', {'articles': articles, 'type': 1})
+    return render(request, 'qa/popular_questions.html', {'articles': articles})
 
 
 def question(request, id):
@@ -63,7 +63,7 @@ def question(request, id):
         }
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
-    return render(request, 'qa/question.html', data)
+    return render(request, 'qa/question_details.html', data)
 
 
 def ask(request):

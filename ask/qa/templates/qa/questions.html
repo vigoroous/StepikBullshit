@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 {% load static %}
+
 <html>
 
 <head>
@@ -7,14 +9,10 @@
 </head>
 
 <body>
-    {% if type == 0 %}
-    <h1>Recent questions</h1>
-    {% elif type == 1 %}
-    <h1>Popular questions</h1>
-    {% else %}
-    <p>Error occured</p>
-    {% endif %}
-
+    {% block header %}
+    {% endblock %}
+    
+    
     <div class="questions">
         {% for question in articles %}
         {# Each "contact" is a Contact model object. #}
@@ -28,7 +26,7 @@
         </div>
         {% endfor %}
     </div>
-    
+
     <div class="pagination">
         <span class="step-links">
             {% if articles.has_previous %}
@@ -46,6 +44,7 @@
             {% endif %}
         </span>
     </div>
+
 </body>
 
 </html>
