@@ -95,12 +95,19 @@ def ask(request):
 def signup_view(request):
     err_message = ''
     if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
         signup_form = SignupForm(request.POST)
         if signup_form.is_valid():
             signup_form.save()
-            resp = HttpResponse(content='', status=302)
-            resp['Location'] = '/login/'
-            return resp
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                resp = HttpResponse(content='', status=302)
+                resp['Location'] = '/'
+                return resp
+            else:
+                err_message = "Invalid login credentials"
         else:
             err_message = 'Invalid form data'
     else:
@@ -114,7 +121,6 @@ def signup_view(request):
 
 def login_view(request):
     err_message = ''
-
     if request.method == "POST":
         login_form = LoginForm(request, request.POST)
         if login_form.is_valid():
