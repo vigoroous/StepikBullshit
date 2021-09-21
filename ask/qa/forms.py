@@ -1,8 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.forms.fields import CharField, EmailField
 from django.forms.models import ModelForm
-from django.forms.widgets import TextInput, Textarea, HiddenInput, PasswordInput, EmailInput
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.forms.widgets import TextInput, Textarea, HiddenInput, PasswordInput
+from django.contrib.auth.forms import AuthenticationForm
 from django.forms import Form
 from django.contrib.auth.models import User
 from .models import Answer, Question
@@ -11,7 +11,7 @@ from .models import Answer, Question
 class AskForm(ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'text']
+        fields = ['title', 'text', 'author']
         widgets = {
             'title': TextInput(attrs={
                 "class": "form__title",
@@ -19,22 +19,24 @@ class AskForm(ModelForm):
             'text': Textarea(attrs={
                 "class": "form__text"
             }),
+            'author': HiddenInput(),
         }
 
 
 class AnswerForm(ModelForm):
     class Meta:
         model = Answer
-        fields = ['text', 'question']
+        fields = ['text', 'question', 'author']
         widgets = {
             'text': Textarea(attrs={
                 "class": "form__text",
             }),
             'question': HiddenInput(),
+            'author': HiddenInput(),
         }
 
 
-class UserSignupForm(Form):
+class SignupForm(Form):
     username = CharField(label='Enter Username', min_length=4, max_length=150)
     email = EmailField(label='Enter email')
     password = CharField(label='Enter password', widget=PasswordInput)
@@ -66,11 +68,7 @@ class UserSignupForm(Form):
         return user
 
 
-class UserLoginForm(AuthenticationForm):
+class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
-        widgets = {
-            'username': TextInput(),
-            'password': PasswordInput(),
-        }

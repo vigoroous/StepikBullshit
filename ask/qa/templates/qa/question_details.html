@@ -44,6 +44,7 @@
         {% csrf_token %}
         {{ form.text }}
         {{ form.question }}
+        {{ form.author }}
         <button type="submit">Submit</button>
     </form>
     <span>{{ error }}</span>
