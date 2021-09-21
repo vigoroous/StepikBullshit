@@ -1,9 +1,11 @@
+from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http.response import Http404
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 from .models import Answer, Question
-from .forms import AskForm, AnswerForm
+from .forms import AskForm, AnswerForm, UserSignupForm, UserLoginForm
 
 
 def test(request, *args, **kwargs):
@@ -43,7 +45,6 @@ def question(request, id):
         this_question = Question.objects.get(pk=id)
         answers = Answer.objects.all().filter(question=id)
         err_message = ''
-
         if request.method == "POST":
             answer_form = AnswerForm(request.POST)
             if answer_form.is_valid():
@@ -55,11 +56,12 @@ def question(request, id):
                 err_message = 'Invalid form data'
         else:
             answer_form = AnswerForm(initial={'question': id})
-
+            
         data = {
             'question': this_question,
             'answers': answers,
             'form': answer_form,
+            'error': err_message,
         }
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
@@ -85,3 +87,28 @@ def ask(request):
         'error': err_message,
     }
     return render(request, 'qa/ask.html', data)
+
+
+def user_signup(request):
+    err_message = ''
+    if request.method == "POST":
+        signup_form = UserSignupForm(request.POST)
+        if signup_form.is_valid():
+            signup_form.save()
+            resp = HttpResponse(content='', status=302)
+            resp['Location'] = '/login/'
+            return resp
+        else:
+            err_message = 'Invalid form data'
+    else:
+        signup_form = UserSignupForm()
+
+    data = {
+        'form': signup_form,
+        'error': err_message,
+    }
+    return render(request, 'qa/signup.html', data)
+
+
+def user_login(request):
+    pass
