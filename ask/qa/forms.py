@@ -11,29 +11,29 @@ from .models import Answer, Question
 class AskForm(ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'text', 'author']
-        widgets = {
-            'title': TextInput(attrs={
-                "class": "form__title",
-            }),
-            'text': Textarea(attrs={
-                "class": "form__text"
-            }),
-            'author': HiddenInput(),
-        }
+        fields = ['title', 'text']
+        # widgets = {
+        #     'title': TextInput(attrs={
+        #         "class": "form__title",
+        #     }),
+        #     'text': Textarea(attrs={
+        #         "class": "form__text"
+        #     }),
+        #     'author': HiddenInput(),
+        # }
 
 
 class AnswerForm(ModelForm):
     class Meta:
         model = Answer
-        fields = ['text', 'question', 'author']
-        widgets = {
-            'text': Textarea(attrs={
-                "class": "form__text",
-            }),
-            'question': HiddenInput(),
-            'author': HiddenInput(),
-        }
+        fields = ['text']
+        # widgets = {
+        #     'text': Textarea(attrs={
+        #         "class": "form__text",
+        #     }),
+        #     'question': HiddenInput(),
+        #     'author': HiddenInput(),
+        # }
 
 
 class SignupForm(Form):

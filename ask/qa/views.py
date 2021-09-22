@@ -46,17 +46,13 @@ def question(request, id):
         answers = Answer.objects.all().filter(question=id)
         err_message = ''
         if request.method == "POST":
-            # immutable structure
-            init_form = request.POST.copy()
-            init_form['question'] = id            
-            user = request.user
-            if user.is_authenticated:
-                init_form['author'] = user
-            else:
-                init_form['author'] = AnonymousUser().get_username()  
-            answer_form = AnswerForm(init_form)
+            answer_form = AnswerForm(request.POST)
             if answer_form.is_valid():
-                created_answer = answer_form.save()
+                created_answer = answer_form.save(commit=False)
+                created_answer.question = this_question
+                if request.user.is_authenticated:
+                    created_answer.author = request.user
+                created_answer.save()
                 resp = HttpResponse(content='', status=302)
                 resp['Location'] = '/question/' + str(created_answer.question.id)
                 return resp
@@ -77,16 +73,13 @@ def question(request, id):
 
 def ask(request):
     err_message = ''
-    if request.method == "POST":
-        init_form = request.POST.copy()
-        user = request.user
-        if user.is_authenticated:
-            init_form['author'] = user
-        else:
-            init_form['author'] = AnonymousUser().get_username()        
-        ask_form = AskForm(init_form)
+    if request.method == "POST":              
+        ask_form = AskForm(request.POST)
         if ask_form.is_valid():
-            created_question = ask_form.save()
+            created_question = ask_form.save(commit=False)
+            if request.user.is_authenticated:
+                created_question.author = request.user
+            created_question.save()
             resp = HttpResponse(content='', status=302)
             resp['Location'] = '/question/' + str(created_question.id)
             return resp
