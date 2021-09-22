@@ -100,7 +100,9 @@ def signup_view(request):
         signup_form = SignupForm(request.POST)
         if signup_form.is_valid():
             signup_form.save()
-            user = authenticate(request, username=username, password=password)
+            # Django is depricated on Stepik (v. 1.10.5)
+            # user = authenticate(request, username=username, password=password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 resp = HttpResponse(content='', status=302)
@@ -126,7 +128,9 @@ def login_view(request):
         if login_form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
+            # Django is depricated on Stepik (v. 1.10.5)
+            # user = authenticate(request, username=username, password=password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 resp = HttpResponse(content='', status=302)
