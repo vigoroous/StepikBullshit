@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http.response import Http404
@@ -47,8 +48,12 @@ def question(request, id):
         if request.method == "POST":
             # immutable structure
             init_form = request.POST.copy()
-            init_form['question'] = id
-            init_form['author'] = request.user
+            init_form['question'] = id            
+            user = request.user
+            if user.is_authenticated:
+                init_form['author'] = user
+            else:
+                init_form['author'] = AnonymousUser().get_username()  
             answer_form = AnswerForm(init_form)
             if answer_form.is_valid():
                 created_answer = answer_form.save()
@@ -74,7 +79,11 @@ def ask(request):
     err_message = ''
     if request.method == "POST":
         init_form = request.POST.copy()
-        init_form['author'] = request.user
+        user = request.user
+        if user.is_authenticated:
+            init_form['author'] = user
+        else:
+            init_form['author'] = AnonymousUser().get_username()        
         ask_form = AskForm(init_form)
         if ask_form.is_valid():
             created_question = ask_form.save()
